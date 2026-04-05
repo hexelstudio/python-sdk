@@ -46,7 +46,8 @@ class SandboxClient:
         resp.raise_for_status()
         return resp.json()
 
-    def execute(self, id: str) -> None:
+    def execute(self, id: str, **kwargs) -> dict:
         """Runs code or shell commands in an allocated sandbox VM"""
-        resp = self._http.post("/compute/v1/vms/{id}/execute".replace("{id}", id))
+        resp = self._http.post("/compute/v1/vms/{id}/execute".replace("{id}", id), json=kwargs)
         resp.raise_for_status()
+        return resp.json()

@@ -13,7 +13,6 @@ class Hexel:
 
         client = Hexel(api_key="studio_live_xxxx")
         sandbox = client.compute.sandbox.create(tier="standard")
-        result = sandbox.execute("print(1 + 1)")
     """
 
     def __init__(
@@ -23,6 +22,7 @@ class Hexel:
         client_id: str | None = None,
         client_secret: str | None = None,
         base_url: str = "https://compute.hexelstudio.com",
+        registry_url: str = "https://api.hexelstudio.com",
         sts_url: str = "https://sts.hexelstudio.com",
         timeout: float = 30.0,
     ):
@@ -32,5 +32,6 @@ class Hexel:
             client_secret=client_secret,
             sts_url=sts_url,
         )
-        self._http = HttpClient(base_url=base_url, auth=self._auth, timeout=timeout)
-        self.compute = ComputeClient(self._http)
+        compute_http = HttpClient(base_url=base_url, auth=self._auth, timeout=timeout)
+        registry_http = HttpClient(base_url=registry_url, auth=self._auth, timeout=timeout)
+        self.compute = ComputeClient(compute_http, registry_http)

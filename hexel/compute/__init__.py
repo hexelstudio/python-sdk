@@ -9,7 +9,7 @@ __all__ = ["ComputeClient", "SandboxClient", "AgentClient", "InstanceClient"]
 class ComputeClient:
     """Hexel Compute — deploy agents and run sandboxes."""
 
-    def __init__(self, http):
-        self.sandbox = SandboxClient(http)
-        self.agent = AgentClient(http)
-        self.instance = InstanceClient(http)
+    def __init__(self, compute_http, registry_http=None):
+        self.sandbox = SandboxClient(compute_http)
+        self.agent = AgentClient(registry_http or compute_http)
+        self.instance = InstanceClient(compute_http)
