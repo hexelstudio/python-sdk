@@ -1,7 +1,7 @@
 {
   "services": {
     "sandbox": {
-      "description": "Isolated execution environments from the warm pool",
+      "description": "Isolated execution environments",
       "endpoints": {
         "POST /compute/v1/vms/allocate": "create",
         "GET /compute/v1/vms": "list",

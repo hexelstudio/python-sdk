@@ -5,7 +5,7 @@ from hexel._internal.ws import WSConnection
 
 
 class SandboxClient:
-    """Isolated execution environments from the warm pool"""
+    """Isolated execution environments"""
 
     def __init__(self, http: HttpClient):
         self._http = http

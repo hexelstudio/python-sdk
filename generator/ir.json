@@ -1,7 +1,7 @@
 {
   "services": {
     "sandbox": {
-      "description": "Isolated execution environments from the warm pool",
+      "description": "Isolated execution environments",
       "methods": {
         "create": {
           "http_method": "POST",
