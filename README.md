@@ -1,6 +1,6 @@
 # Hexel Python SDK
 
-The official Python SDK for [Hexel Compute](https://hexelstudio.com) — deploy and run AI agents with sub-millisecond latency.
+The official Python SDK for [Hexel Studio](https://hexelstudio.com) — build, deploy, and run AI agents.
 
 ## Install
 
