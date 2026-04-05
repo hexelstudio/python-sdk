@@ -75,15 +75,15 @@ class SandboxClient:
             vm = self.get(id)
             self._vm_cache[id] = vm
         bearer = self._http._auth.token
-        for attempt in range(5):
+        for attempt in range(8):
             try:
                 conn = WSConnection(vm["ws_url"], bearer)
                 self._connections[id] = conn
                 return conn
             except Exception:
-                if attempt == 4:
+                if attempt == 7:
                     raise
-                time.sleep(1 + attempt)
+                time.sleep(0.5 * (attempt + 1))
 
     def _cleanup(self, id: str):
         conn = self._connections.pop(id, None)
