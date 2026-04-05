@@ -13,25 +13,37 @@ class WSConnection:
         self.context_id = msg.get("data", "")
 
     def execute(self, code: str, language: str = "python") -> dict:
+        """Execute code on the pre-warmed kernel."""
         self._ws.send(json.dumps({
             "type": "execute",
             "code": code,
             "language": language,
             "context_id": self.context_id,
         }))
+        return self._collect()
+
+    def command(self, cmd: str) -> dict:
+        """Run a shell command."""
+        self._ws.send(json.dumps({"type": "command", "command": cmd}))
+        return self._collect()
+
+    def _collect(self) -> dict:
         output_lines = []
         status = "ok"
         while True:
             raw = self._ws.recv()
             msg = json.loads(raw)
             t = msg.get("type", "")
-            if t == "stdout":
-                output_lines.append(msg.get("data", ""))
+            d = msg.get("data", "")
+            if t in ("stdout", "output"):
+                output_lines.append(d)
             elif t == "stderr":
-                output_lines.append(msg.get("data", ""))
+                output_lines.append(d)
+            elif t == "started":
+                continue
             elif t == "error":
                 status = "error"
-                output_lines.append(msg.get("data", ""))
+                output_lines.append(d)
                 break
             elif t in ("done", "execution_complete"):
                 break

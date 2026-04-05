@@ -14,7 +14,7 @@ class SandboxClient:
         self._vm_cache: dict[str, dict] = {}
 
     def create(self, **kwargs) -> dict:
-        """Allocates a VM from the pool"""
+        """Allocates a sandbox VM."""
         resp = self._http.post("/compute/v1/vms/allocate", json=kwargs)
         resp.raise_for_status()
         data = resp.json()
@@ -24,61 +24,69 @@ class SandboxClient:
     def list(self) -> dict:
         resp = self._http.get("/compute/v1/vms")
         resp.raise_for_status()
-        data = resp.json()
-        return data if isinstance(data, list) else data.get("agents", data.get("items", []))
+        return resp.json()
 
     def get(self, id: str) -> dict:
-        resp = self._http.get("/compute/v1/vms/{id}".replace("{id}", id))
+        resp = self._http.get(f"/compute/v1/vms/{id}")
         resp.raise_for_status()
         return resp.json()
 
     def delete(self, id: str) -> None:
-        resp = self._http.delete("/compute/v1/vms/{id}".replace("{id}", id))
+        self._cleanup(id)
+        resp = self._http.delete(f"/compute/v1/vms/{id}")
         resp.raise_for_status()
-        self._connections.pop(id, None)
-        self._vm_cache.pop(id, None)
 
     def release(self, id: str, **kwargs) -> dict:
-        conn = self._connections.pop(id, None)
-        if conn:
-            conn.close()
-        self._vm_cache.pop(id, None)
-        resp = self._http.post("/compute/v1/vms/{id}/release".replace("{id}", id), json=kwargs)
+        self._cleanup(id)
+        resp = self._http.post(f"/compute/v1/vms/{id}/release", json=kwargs)
         if resp.status_code == 404:
             return {"id": id, "state": "terminated"}
         resp.raise_for_status()
         return resp.json()
 
     def renew(self, id: str, **kwargs) -> dict:
-        resp = self._http.post("/compute/v1/vms/{id}/renew".replace("{id}", id), json=kwargs)
+        resp = self._http.post(f"/compute/v1/vms/{id}/renew", json=kwargs)
         resp.raise_for_status()
         return resp.json()
 
     def execute(self, id: str, *, code: str, language: str = "python") -> dict:
-        """Execute code via WebSocket (fast path ~50ms)."""
-        conn = self._connections.get(id)
-        if not conn:
-            vm = self._vm_cache.get(id)
-            ws_url = vm["ws_url"] if vm else self.get(id).get("ws_url")
-            bearer = self._http._auth.token
-            for attempt in range(5):
-                try:
-                    conn = WSConnection(ws_url, bearer)
-                    self._connections[id] = conn
-                    break
-                except Exception:
-                    if attempt == 4:
-                        raise
-                    time.sleep(1 + attempt)
+        """Execute code via persistent WebSocket (~50ms)."""
+        conn = self._get_ws(id)
         result = conn.execute(code, language)
         if result["status"] == "error" and "kernel" in result.get("output", "").lower():
-            # Kernel cold start — reconnect and retry once
+            self._connections.pop(id, None)
             conn.close()
-            bearer = self._http._auth.token
-            vm = self._vm_cache.get(id)
-            ws_url = vm["ws_url"] if vm else self.get(id).get("ws_url")
             time.sleep(1)
-            conn = WSConnection(ws_url, bearer)
-            self._connections[id] = conn
+            conn = self._get_ws(id)
             result = conn.execute(code, language)
         return result
+
+    def run(self, id: str, command: str) -> dict:
+        """Run a shell command via persistent WebSocket (~10ms)."""
+        conn = self._get_ws(id)
+        return conn.command(command)
+
+    def _get_ws(self, id: str) -> WSConnection:
+        conn = self._connections.get(id)
+        if conn:
+            return conn
+        vm = self._vm_cache.get(id)
+        if not vm:
+            vm = self.get(id)
+            self._vm_cache[id] = vm
+        bearer = self._http._auth.token
+        for attempt in range(5):
+            try:
+                conn = WSConnection(vm["ws_url"], bearer)
+                self._connections[id] = conn
+                return conn
+            except Exception:
+                if attempt == 4:
+                    raise
+                time.sleep(1 + attempt)
+
+    def _cleanup(self, id: str):
+        conn = self._connections.pop(id, None)
+        if conn:
+            conn.close()
+        self._vm_cache.pop(id, None)
