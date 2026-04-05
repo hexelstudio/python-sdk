@@ -421,12 +421,6 @@
       "original": "models.AgentVM",
       "fields": [
         {
-          "name": "agentd_token",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "allocated_at",
           "type": "string",
           "required": false,
@@ -435,12 +429,6 @@
         {
           "name": "created_at",
           "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "env",
-          "type": "dict[str, string]",
           "required": false,
           "description": ""
         },
@@ -459,24 +447,6 @@
         {
           "name": "metadata",
           "type": "dict[str, string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "org_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "pod_ip",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "pod_name",
-          "type": "string",
           "required": false,
           "description": ""
         },
@@ -500,6 +470,12 @@
         },
         {
           "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "token",
           "type": "string",
           "required": false,
           "description": ""
@@ -563,12 +539,6 @@
       "original": "models.AllocateResponse",
       "fields": [
         {
-          "name": "agentd_token",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "endpoint",
           "type": "string",
           "required": false,
@@ -594,6 +564,12 @@
         },
         {
           "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "token",
           "type": "string",
           "required": false,
           "description": ""
@@ -862,12 +838,6 @@
         {
           "name": "by_tier",
           "type": "dict[str, integer]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "org_id",
-          "type": "string",
           "required": false,
           "description": ""
         },

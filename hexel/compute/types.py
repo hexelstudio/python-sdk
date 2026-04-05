@@ -52,20 +52,16 @@ class InstanceInfo:
 @dataclass
 class SandboxInfo:
     """models.AgentVM"""
-    agentd_token: str | None = None
     allocated_at: str | None = None
     created_at: str | None = None
-    env: dict[str, string] | None = None
     expires_at: str | None = None
     id: str | None = None
     metadata: dict[str, string] | None = None
-    org_id: str | None = None
-    pod_ip: str | None = None
-    pod_name: str | None = None
     released_at: str | None = None
     skills: list[str] | None = None
     state: str | None = None
     tier: str | None = None
+    token: str | None = None
     ttl_seconds: int | None = None
     @classmethod
     def from_dict(cls, d: dict) -> "SandboxInfo":
@@ -88,12 +84,12 @@ class CreateSandboxRequest:
 @dataclass
 class SandboxResponse:
     """models.AllocateResponse"""
-    agentd_token: str | None = None
     endpoint: str | None = None
     expires_at: str | None = None
     skills_loaded: list[str] | None = None
     state: str | None = None
     tier: str | None = None
+    token: str | None = None
     vm_id: str | None = None
     ws_url: str | None = None
     @classmethod
@@ -194,7 +190,6 @@ class UsageRecord:
 class UsageSummary:
     """models.UsageSummary"""
     by_tier: dict[str, integer] | None = None
-    org_id: str | None = None
     period_end: str | None = None
     period_start: str | None = None
     total_seconds: int | None = None
