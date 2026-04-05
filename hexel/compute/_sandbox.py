@@ -50,7 +50,22 @@ class SandboxClient:
         """Runs code or shell commands in an allocated sandbox VM"""
         resp = self._http.post("/compute/v1/vms/{id}/execute".replace("{id}", id), json=kwargs)
         resp.raise_for_status()
-        text = resp.text
-        if not text:
-            return {}
-        return resp.json()
+        # Response is SSE (text/event-stream) — parse it
+        output_lines = []
+        status = "ok"
+        for line in resp.text.splitlines():
+            if line.startswith("data: "):
+                payload = line[6:]
+                if payload.startswith("{"):
+                    try:
+                        import json
+                        msg = json.loads(payload)
+                        if "status" in msg:
+                            status = msg["status"]
+                        if "error" in msg:
+                            output_lines.append(msg["error"])
+                    except Exception:
+                        output_lines.append(payload)
+                else:
+                    output_lines.append(payload)
+        return {"output": "\n".join(output_lines), "status": status}
