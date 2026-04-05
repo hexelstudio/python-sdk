@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hexel"
-version = "0.2.2"
+version = "0.2.3"
 description = "Hexel Studio SDK — deploy and run AI agents"
 readme = "README.md"
 license = { text = "MIT" }

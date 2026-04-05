@@ -56,7 +56,7 @@ class SandboxClient:
         if result["status"] == "error" and "kernel" in result.get("output", "").lower():
             self._connections.pop(id, None)
             conn.close()
-            time.sleep(1)
+            time.sleep(0.3)
             conn = self._get_ws(id)
             result = conn.execute(code, language)
         return result
