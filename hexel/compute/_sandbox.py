@@ -50,4 +50,7 @@ class SandboxClient:
         """Runs code or shell commands in an allocated sandbox VM"""
         resp = self._http.post("/compute/v1/vms/{id}/execute".replace("{id}", id), json=kwargs)
         resp.raise_for_status()
+        text = resp.text
+        if not text:
+            return {}
         return resp.json()
