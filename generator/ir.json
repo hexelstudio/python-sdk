@@ -1,0 +1,1575 @@
+{
+  "services": {
+    "sandbox": {
+      "description": "Isolated execution environments from the warm pool",
+      "methods": {
+        "create": {
+          "http_method": "POST",
+          "path": "/compute/v1/vms/allocate",
+          "path_params": [],
+          "request_type": "CreateSandboxRequest",
+          "response_type": "SandboxResponse",
+          "description": "Allocates a VM from the pool or creates a new one for the requesting org",
+          "tags": [
+            "vms"
+          ]
+        },
+        "list": {
+          "http_method": "GET",
+          "path": "/compute/v1/vms",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "list[AgentVM]",
+          "description": "Returns VMs scoped to the caller's org",
+          "tags": [
+            "vms"
+          ]
+        },
+        "get": {
+          "http_method": "GET",
+          "path": "/compute/v1/vms/{id}",
+          "path_params": [
+            "id"
+          ],
+          "request_type": null,
+          "response_type": "SandboxInfo",
+          "description": "Get Agent VM by ID",
+          "tags": [
+            "vms"
+          ]
+        },
+        "delete": {
+          "http_method": "DELETE",
+          "path": "/compute/v1/vms/{id}",
+          "path_params": [
+            "id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "Delete Agent VM",
+          "tags": [
+            "vms"
+          ]
+        },
+        "release": {
+          "http_method": "POST",
+          "path": "/compute/v1/vms/{id}/release",
+          "path_params": [
+            "id"
+          ],
+          "request_type": "ReleaseRequest",
+          "response_type": "SandboxInfo",
+          "description": "Release Agent VM",
+          "tags": [
+            "vms"
+          ]
+        },
+        "renew": {
+          "http_method": "POST",
+          "path": "/compute/v1/vms/{id}/renew",
+          "path_params": [
+            "id"
+          ],
+          "request_type": "RenewRequest",
+          "response_type": "SandboxInfo",
+          "description": "Renew Agent VM TTL",
+          "tags": [
+            "vms"
+          ]
+        },
+        "execute": {
+          "http_method": "POST",
+          "path": "/compute/v1/vms/{id}/execute",
+          "path_params": [
+            "id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "Runs code or shell commands in an allocated sandbox VM",
+          "tags": [
+            "vms"
+          ]
+        }
+      }
+    },
+    "agent": {
+      "description": "Agent registry \u2014 register and manage agent images",
+      "methods": {
+        "register": {
+          "http_method": "POST",
+          "path": "/registry/v1/agents",
+          "path_params": [],
+          "request_type": "CreateAgentRequest",
+          "response_type": "AgentResponse",
+          "description": "Register a new agent in the catalog",
+          "tags": [
+            "agents"
+          ]
+        },
+        "list": {
+          "http_method": "GET",
+          "path": "/registry/v1/agents",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "AgentsListResponse",
+          "description": "List agents with optional filters",
+          "tags": [
+            "agents"
+          ]
+        },
+        "get": {
+          "http_method": "GET",
+          "path": "/registry/v1/agents/{id}",
+          "path_params": [
+            "id"
+          ],
+          "request_type": null,
+          "response_type": "AgentResponse",
+          "description": "Get agent by ID",
+          "tags": [
+            "agents"
+          ]
+        },
+        "update": {
+          "http_method": "PUT",
+          "path": "/registry/v1/agents/{id}",
+          "path_params": [
+            "id"
+          ],
+          "request_type": "UpdateAgentRequest",
+          "response_type": "AgentResponse",
+          "description": "Update agent fields",
+          "tags": [
+            "agents"
+          ]
+        },
+        "delete": {
+          "http_method": "DELETE",
+          "path": "/registry/v1/agents/{id}",
+          "path_params": [
+            "id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "Delete agent by ID",
+          "tags": [
+            "agents"
+          ]
+        },
+        "search": {
+          "http_method": "GET",
+          "path": "/registry/v1/agents/search",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "AgentsListResponse",
+          "description": "Find agents matching given capabilities",
+          "tags": [
+            "agents"
+          ]
+        }
+      }
+    },
+    "instance": {
+      "description": "Agent deployments \u2014 deploy agents and manage instances",
+      "methods": {
+        "deploy": {
+          "http_method": "POST",
+          "path": "/compute/v1/agents/{agent_id}/deploy",
+          "path_params": [
+            "agent_id"
+          ],
+          "request_type": null,
+          "response_type": "InstanceInfo",
+          "description": "Creates a new deployment from a registered agent. Returns a deployment_id to use for all subsequent operations.",
+          "tags": [
+            "agents"
+          ]
+        },
+        "list": {
+          "http_method": "GET",
+          "path": "/compute/v1/deployments",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "list[Agent]",
+          "description": "List all deployments",
+          "tags": [
+            "deployments"
+          ]
+        },
+        "get": {
+          "http_method": "GET",
+          "path": "/compute/v1/deployments/{deployment_id}",
+          "path_params": [
+            "deployment_id"
+          ],
+          "request_type": null,
+          "response_type": "InstanceInfo",
+          "description": "Get deployment by ID",
+          "tags": [
+            "deployments"
+          ]
+        },
+        "delete": {
+          "http_method": "DELETE",
+          "path": "/compute/v1/deployments/{deployment_id}",
+          "path_params": [
+            "deployment_id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "Delete a deployment",
+          "tags": [
+            "deployments"
+          ]
+        },
+        "stop": {
+          "http_method": "POST",
+          "path": "/compute/v1/deployments/{deployment_id}/stop",
+          "path_params": [
+            "deployment_id"
+          ],
+          "request_type": null,
+          "response_type": "InstanceInfo",
+          "description": "Stop a deployment",
+          "tags": [
+            "deployments"
+          ]
+        },
+        "redeploy": {
+          "http_method": "POST",
+          "path": "/compute/v1/deployments/{deployment_id}/redeploy",
+          "path_params": [
+            "deployment_id"
+          ],
+          "request_type": null,
+          "response_type": "InstanceInfo",
+          "description": "Redeploy (stop + start)",
+          "tags": [
+            "deployments"
+          ]
+        }
+      }
+    }
+  },
+  "types": {
+    "OAuthClient": {
+      "original": "iamclient.OAuthClient",
+      "fields": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "OAuthClientResponse": {
+      "original": "iamclient.OAuthClientResponse",
+      "fields": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "client_secret",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "InstanceInfo": {
+      "original": "models.Agent",
+      "fields": [
+        {
+          "name": "allowed_org_ids",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "author",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "capabilities",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "image_pull_secret",
+          "type": "models.ImagePullSecret",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "manifest",
+          "type": "models.AgentManifest",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "public_key",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": "registered, deploying, running, active, idle, sleeping, stopped, failed"
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "visibility",
+          "type": "string",
+          "required": false,
+          "description": "private, public"
+        }
+      ]
+    },
+    "SandboxInfo": {
+      "original": "models.AgentVM",
+      "fields": [
+        {
+          "name": "agentd_token",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "allocated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "env",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "pod_ip",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "pod_name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "released_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateSandboxRequest": {
+      "original": "models.AllocateRequest",
+      "fields": [
+        {
+          "name": "env",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "secure_runtime",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "SandboxResponse": {
+      "original": "models.AllocateResponse",
+      "fields": [
+        {
+          "name": "agentd_token",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills_loaded",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "vm_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ws_url",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateSkillRequest": {
+      "original": "models.CreateSkillRequest",
+      "fields": [
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "resources",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": "Resources are files written into /workspace/skills/<name>/.\nInclude \"requirements.txt\" to install Python dependencies at VM boot."
+        }
+      ]
+    },
+    "ErrorResponse": {
+      "original": "models.ErrorResponse",
+      "fields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "PoolConfig": {
+      "original": "models.PoolConfig",
+      "fields": [
+        {
+          "name": "default_skills",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "default_tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "idle_ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max_total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max_vm_ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max_warm",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min_warm",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "recycle",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "scale_up_threshold",
+          "type": "number",
+          "required": false,
+          "description": "ScaleUpThreshold: when allocated/(warm+allocated) exceeds this ratio (0.0\u20131.0),\nproactively create more warm pods. Default 0.7 (70% utilisation triggers scale-up)."
+        }
+      ]
+    },
+    "PoolStatus": {
+      "original": "models.PoolStatus",
+      "fields": [
+        {
+          "name": "allocated",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "by_tier",
+          "type": "dict[str, integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "warm",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "ReleaseRequest": {
+      "original": "models.ReleaseRequest",
+      "fields": [
+        {
+          "name": "recycle",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "RenewRequest": {
+      "original": "models.RenewRequest",
+      "fields": [
+        {
+          "name": "ttl_seconds",
+          "type": "integer",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "Skill": {
+      "original": "models.Skill",
+      "fields": [
+        {
+          "name": "content",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "content_hash",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "resources",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "UsageRecord": {
+      "original": "models.UsageRecord",
+      "fields": [
+        {
+          "name": "duration_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ended_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "started_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "vm_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "UsageSummary": {
+      "original": "models.UsageSummary",
+      "fields": [
+        {
+          "name": "by_tier",
+          "type": "dict[str, integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "period_end",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "period_start",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "total_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "vm_count",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "AgentManifest": {
+      "original": "models.AgentManifest",
+      "fields": [
+        {
+          "name": "authentication",
+          "type": "dict",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "capabilities",
+          "type": "dict",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "input_schema",
+          "type": "dict",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "output_schema",
+          "type": "dict",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "runtime",
+          "type": "dict",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills",
+          "type": "list[models.ManifestSkill]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "url",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "AgentResponse": {
+      "original": "models.AgentResponse",
+      "fields": [
+        {
+          "name": "agent",
+          "type": "models.Agent",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "AgentsListResponse": {
+      "original": "models.AgentsListResponse",
+      "fields": [
+        {
+          "name": "agents",
+          "type": "list[models.Agent]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateAgentRequest": {
+      "original": "models.CreateAgentRequest",
+      "fields": [
+        {
+          "name": "author",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "capabilities",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "image_pull_secret",
+          "type": "models.ImagePullSecret",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "manifest",
+          "type": "models.AgentManifest",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateToolRequest": {
+      "original": "models.CreateToolRequest",
+      "fields": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "ImagePullSecret": {
+      "original": "models.ImagePullSecret",
+      "fields": [
+        {
+          "name": "password",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "registry",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "ManifestSkill": {
+      "original": "models.ManifestSkill",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "inputModes",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "outputModes",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "Tool": {
+      "original": "models.Tool",
+      "fields": [
+        {
+          "name": "category",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "ToolResponse": {
+      "original": "models.ToolResponse",
+      "fields": [
+        {
+          "name": "tool",
+          "type": "models.Tool",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "ToolsListResponse": {
+      "original": "models.ToolsListResponse",
+      "fields": [
+        {
+          "name": "tools",
+          "type": "list[models.Tool]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "UpdateAgentRequest": {
+      "original": "models.UpdateAgentRequest",
+      "fields": [
+        {
+          "name": "capabilities",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "image",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "manifest",
+          "type": "models.AgentManifest",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "public_key",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "version",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CodeContext": {
+      "original": "models.CodeContext",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "kernel_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "session_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CommandStatus": {
+      "original": "models.CommandStatus",
+      "fields": [
+        {
+          "name": "exit_code",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "finished_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "running",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "started_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateContextRequest": {
+      "original": "models.CreateContextRequest",
+      "fields": [
+        {
+          "name": "language",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "session_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "ExecuteCodeRequest": {
+      "original": "models.ExecuteCodeRequest",
+      "fields": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "context_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "ExecuteRequest": {
+      "original": "models.ExecuteRequest",
+      "fields": []
+    },
+    "FileInfo": {
+      "original": "models.FileInfo",
+      "fields": [
+        {
+          "name": "group",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "is_dir",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mod_time",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "owner",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "LoadSkillsRequest": {
+      "original": "models.LoadSkillsRequest",
+      "fields": [
+        {
+          "name": "skills",
+          "type": "list[string]",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "MetricsSnapshot": {
+      "original": "models.MetricsSnapshot",
+      "fields": [
+        {
+          "name": "cpu_percent",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mem_total_bytes",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "mem_used_bytes",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tokens_total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "RunCommandRequest": {
+      "original": "models.RunCommandRequest",
+      "fields": [
+        {
+          "name": "background",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "command",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "cwd",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "envs",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "gid",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "timeout_ms",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "uid",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "SSEEvent": {
+      "original": "models.SSEEvent",
+      "fields": [
+        {
+          "name": "data",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "event",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "SkillInfo": {
+      "original": "models.SkillInfo",
+      "fields": [
+        {
+          "name": "loaded",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    }
+  },
+  "websocket": {
+    "sandbox": {
+      "url_field": "ws_url",
+      "methods": {
+        "execute": {
+          "type": "execute",
+          "fields": [
+            "code",
+            "language"
+          ]
+        },
+        "command": {
+          "type": "command",
+          "fields": [
+            "command"
+          ]
+        }
+      },
+      "terminal_events": [
+        "done",
+        "execution_complete",
+        "error"
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "services": {
+    "sandbox": {
+      "description": "Isolated execution environments from the warm pool",
+      "endpoints": {
+        "POST /compute/v1/vms/allocate": "create",
+        "GET /compute/v1/vms": "list",
+        "GET /compute/v1/vms/{id}": "get",
+        "DELETE /compute/v1/vms/{id}": "delete",
+        "POST /compute/v1/vms/{id}/release": "release",
+        "POST /compute/v1/vms/{id}/renew": "renew",
+        "POST /compute/v1/vms/{id}/execute": "execute"
+      }
+    },
+    "agent": {
+      "description": "Agent registry — register and manage agent images",
+      "endpoints": {
+        "POST /registry/v1/agents": "register",
+        "GET /registry/v1/agents": "list",
+        "GET /registry/v1/agents/{id}": "get",
+        "PUT /registry/v1/agents/{id}": "update",
+        "DELETE /registry/v1/agents/{id}": "delete",
+        "GET /registry/v1/agents/search": "search"
+      }
+    },
+    "instance": {
+      "description": "Agent deployments — deploy agents and manage instances",
+      "endpoints": {
+        "POST /compute/v1/agents/{agent_id}/deploy": "deploy",
+        "GET /compute/v1/deployments": "list",
+        "GET /compute/v1/deployments/{deployment_id}": "get",
+        "DELETE /compute/v1/deployments/{deployment_id}": "delete",
+        "POST /compute/v1/deployments/{deployment_id}/stop": "stop",
+        "POST /compute/v1/deployments/{deployment_id}/redeploy": "redeploy"
+      }
+    }
+  },
+  "exclude_paths": [
+    "/internal/",
+    "/compute/v1/pool/",
+    "/compute/v1/access/",
+    "/compute/v1/skills",
+    "/compute/v1/usage",
+    "/compute/v1/vms/{id}/r/",
+    "/compute/v1/vms/{id}/endpoint"
+  ],
+  "type_renames": {
+    "models.AllocateRequest": "CreateSandboxRequest",
+    "models.AllocateResponse": "SandboxResponse",
+    "models.AgentVM": "SandboxInfo",
+    "models.Agent": "InstanceInfo",
+    "models.ReleaseRequest": "ReleaseRequest",
+    "models.RenewRequest": "RenewRequest",
+    "registryclient.Agent": "AgentInfo"
+  },
+  "websocket": {
+    "sandbox": {
+      "url_field": "ws_url",
+      "methods": {
+        "execute": {"type": "execute", "fields": ["code", "language"]},
+        "command": {"type": "command", "fields": ["command"]}
+      },
+      "terminal_events": ["done", "execution_complete", "error"]
+    }
+  }
+}
