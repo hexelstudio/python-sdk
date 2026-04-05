@@ -1,4 +1,4 @@
 from hexel._client import Hexel
 
 __all__ = ["Hexel"]
-__version__ = "0.2.3"
+__version__ = "0.3.0"
