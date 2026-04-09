@@ -35,3 +35,4 @@ class Hexel:
         compute_http = HttpClient(base_url=base_url, auth=self._auth, timeout=timeout)
         registry_http = HttpClient(base_url=registry_url, auth=self._auth, timeout=timeout)
         self.compute = ComputeClient(compute_http, registry_http)
+        # invoke ci
