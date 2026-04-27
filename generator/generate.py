@@ -74,18 +74,24 @@ def generate():
 
     # Generate service clients
     service_tmpl = env.get_template("service.py.j2")
+    output_dirs = set()
     for service_name, service_def in ir["services"].items():
         class_name = to_class_name(service_name)
         has_ws = service_name in ir.get("websocket", {})
 
-        print(f"→ Generating _{service_name}.py ({class_name}, {len(service_def['methods'])} methods)...")
+        # Determine output directory
+        svc_output = Path(service_def.get("output_dir", OUTPUT_DIR))
+        svc_output.mkdir(parents=True, exist_ok=True)
+        output_dirs.add(str(svc_output))
+
+        print(f"→ Generating {svc_output}/_{service_name}.py ({class_name}, {len(service_def['methods'])} methods)...")
         code = service_tmpl.render(
             class_name=class_name,
             description=service_def["description"],
             methods=service_def["methods"],
             has_ws=has_ws,
         )
-        (output / f"_{service_name}.py").write_text(code)
+        (svc_output / f"_{service_name}.py").write_text(code)
 
     # Generate __init__.py
     print("→ Generating __init__.py...")

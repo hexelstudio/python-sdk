@@ -144,6 +144,7 @@ def build_ir(specs: dict[str, dict], overrides: dict) -> dict:
 
         ir["services"][service_name] = {
             "description": service_def.get("description", ""),
+            "output_dir": service_def.get("output_dir", ""),
             "methods": methods,
         }
 
@@ -158,16 +159,10 @@ def build_from_files(specs_dir: str, overrides_path: str) -> dict:
     specs_dir = Path(specs_dir)
     specs = {}
 
-    spec_map = {
-        "compute-api.json": "compute",
-        "agent-registry-api.json": "registry",
-        "agentd-api.json": "agentd",
-    }
-
-    for filename, key in spec_map.items():
-        path = specs_dir / filename
-        if path.exists():
-            specs[key] = load_spec(str(path))
+    # Load all JSON spec files
+    for path in sorted(specs_dir.glob("*.json")):
+        key = path.stem.replace("-api", "").replace("-", "_")
+        specs[key] = load_spec(str(path))
 
     with open(overrides_path) as f:
         overrides = json.load(f)

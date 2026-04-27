@@ -4,198 +4,25 @@ from dataclasses import dataclass, field
 from typing import Any
 
 @dataclass
-class OAuthClient:
-    """iamclient.OAuthClient"""
-    client_id: str | None = None
-    created_at: str | None = None
-    is_active: bool | None = None
-    name: str | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "OAuthClient":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class OAuthClientResponse:
-    """iamclient.OAuthClientResponse"""
-    client_id: str | None = None
-    client_secret: str | None = None
-    name: str | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "OAuthClientResponse":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
 class InstanceInfo:
     """models.Agent"""
-    allowed_org_ids: list[str] | None = None
-    author: str | None = None
-    capabilities: list[str] | None = None
+    config_hash: str | None = None
     created_at: str | None = None
-    description: str | None = None
     endpoint: str | None = None
+    endpoint_name: str | None = None
     id: str | None = None
     image: str | None = None
-    image_pull_secret: models.ImagePullSecret | None = None
-    manifest: models.AgentManifest | None = None
+    manifest: dict | None = None
     metadata: dict[str, string] | None = None
     name: str | None = None
-    org_id: str | None = None
-    public_key: str | None = None
+    registry_id: str | None = None
+    skills: list[str] | None = None
     state: str | None = None
+    tier: str | None = None
+    token: str | None = None
     updated_at: str | None = None
-    version: str | None = None
-    visibility: str | None = None
     @classmethod
     def from_dict(cls, d: dict) -> "InstanceInfo":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class SandboxInfo:
-    """models.AgentVM"""
-    allocated_at: str | None = None
-    created_at: str | None = None
-    expires_at: str | None = None
-    id: str | None = None
-    metadata: dict[str, string] | None = None
-    released_at: str | None = None
-    skills: list[str] | None = None
-    state: str | None = None
-    tier: str | None = None
-    token: str | None = None
-    ttl_seconds: int | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "SandboxInfo":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class CreateSandboxRequest:
-    """models.AllocateRequest"""
-    env: dict[str, string] | None = None
-    metadata: dict[str, string] | None = None
-    org_id: str | None = None
-    secure_runtime: str | None = None
-    skills: list[str] | None = None
-    tier: str
-    ttl_seconds: int | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "CreateSandboxRequest":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class SandboxResponse:
-    """models.AllocateResponse"""
-    endpoint: str | None = None
-    expires_at: str | None = None
-    skills_loaded: list[str] | None = None
-    state: str | None = None
-    tier: str | None = None
-    token: str | None = None
-    vm_id: str | None = None
-    ws_url: str | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "SandboxResponse":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class CreateSkillRequest:
-    """models.CreateSkillRequest"""
-    content: str
-    description: str | None = None
-    name: str
-    resources: dict[str, string] | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "CreateSkillRequest":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class ErrorResponse:
-    """models.ErrorResponse"""
-    code: int | None = None
-    message: str | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "ErrorResponse":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class PoolConfig:
-    """models.PoolConfig"""
-    default_skills: list[str] | None = None
-    default_tier: str | None = None
-    idle_ttl_seconds: int | None = None
-    max_total: int | None = None
-    max_vm_ttl_seconds: int | None = None
-    max_warm: int | None = None
-    min_warm: int | None = None
-    recycle: bool | None = None
-    scale_up_threshold: float | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "PoolConfig":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class PoolStatus:
-    """models.PoolStatus"""
-    allocated: int | None = None
-    by_tier: dict[str, integer] | None = None
-    total: int | None = None
-    warm: int | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "PoolStatus":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class ReleaseRequest:
-    """models.ReleaseRequest"""
-    recycle: bool | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "ReleaseRequest":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class RenewRequest:
-    """models.RenewRequest"""
-    ttl_seconds: int
-    @classmethod
-    def from_dict(cls, d: dict) -> "RenewRequest":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class Skill:
-    """models.Skill"""
-    content: str | None = None
-    content_hash: str | None = None
-    created_at: str | None = None
-    description: str | None = None
-    name: str | None = None
-    resources: dict[str, string] | None = None
-    updated_at: str | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "Skill":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class UsageRecord:
-    """models.UsageRecord"""
-    duration_seconds: int | None = None
-    ended_at: str | None = None
-    reason: str | None = None
-    started_at: str | None = None
-    tier: str | None = None
-    vm_id: str | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "UsageRecord":
-        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
-
-@dataclass
-class UsageSummary:
-    """models.UsageSummary"""
-    by_tier: dict[str, integer] | None = None
-    period_end: str | None = None
-    period_start: str | None = None
-    total_seconds: int | None = None
-    vm_count: int | None = None
-    @classmethod
-    def from_dict(cls, d: dict) -> "UsageSummary":
         return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
 
 @dataclass
@@ -259,6 +86,16 @@ class CreateToolRequest:
     name: str
     @classmethod
     def from_dict(cls, d: dict) -> "CreateToolRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class ErrorResponse:
+    """models.ErrorResponse"""
+    code: int | None = None
+    error_code: str | None = None
+    message: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "ErrorResponse":
         return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
 
 @dataclass
@@ -440,5 +277,437 @@ class SkillInfo:
     path: str | None = None
     @classmethod
     def from_dict(cls, d: dict) -> "SkillInfo":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class approval-service_internal_ApprovalRequest:
+    """approval-service_internal_models.ApprovalRequest"""
+    action: str | None = None
+    agent_id: str | None = None
+    comment: str | None = None
+    context: dict[str, string] | None = None
+    created_at: str | None = None
+    expires_at: str | None = None
+    id: str | None = None
+    node_id: str | None = None
+    org_id: str | None = None
+    policy_id: str | None = None
+    requested_by: str | None = None
+    resource: str | None = None
+    reviewed_at: str | None = None
+    reviewed_by: str | None = None
+    status: approval-service_internal_models.Status | None = None
+    task_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "approval-service_internal_ApprovalRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class approval-service_internal_CreateApprovalRequest:
+    """approval-service_internal_models.CreateApprovalRequest"""
+    action: str
+    agent_id: str
+    context: dict[str, string] | None = None
+    node_id: str
+    org_id: str
+    policy_id: str
+    requested_by: str
+    resource: str
+    task_id: str
+    @classmethod
+    def from_dict(cls, d: dict) -> "approval-service_internal_CreateApprovalRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class approval-service_internal_ErrorResponse:
+    """approval-service_internal_models.ErrorResponse"""
+    details: str | None = None
+    error: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "approval-service_internal_ErrorResponse":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class approval-service_internal_ReviewRequest:
+    """approval-service_internal_models.ReviewRequest"""
+    comment: str | None = None
+    decision: approval-service_internal_models.Status
+    reviewed_by: str
+    @classmethod
+    def from_dict(cls, d: dict) -> "approval-service_internal_ReviewRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class approval-service_internal_Status:
+    """approval-service_internal_models.Status"""
+    @classmethod
+    def from_dict(cls, d: dict) -> "approval-service_internal_Status":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class OAuthClient:
+    """iamclient.OAuthClient"""
+    client_id: str | None = None
+    created_at: str | None = None
+    is_active: bool | None = None
+    name: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "OAuthClient":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class OAuthClientResponse:
+    """iamclient.OAuthClientResponse"""
+    client_id: str | None = None
+    client_secret: str | None = None
+    name: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "OAuthClientResponse":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class SandboxInfo:
+    """models.AgentVM"""
+    allocated_at: str | None = None
+    created_at: str | None = None
+    expires_at: str | None = None
+    id: str | None = None
+    metadata: dict[str, string] | None = None
+    released_at: str | None = None
+    skills: list[str] | None = None
+    state: str | None = None
+    tier: str | None = None
+    token: str | None = None
+    ttl_seconds: int | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "SandboxInfo":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class CreateSandboxRequest:
+    """models.AllocateRequest"""
+    env: dict[str, string] | None = None
+    metadata: dict[str, string] | None = None
+    org_id: str | None = None
+    secure_runtime: str | None = None
+    skills: list[str] | None = None
+    tier: str
+    ttl_seconds: int | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "CreateSandboxRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class SandboxResponse:
+    """models.AllocateResponse"""
+    endpoint: str | None = None
+    expires_at: str | None = None
+    skills_loaded: list[str] | None = None
+    state: str | None = None
+    tier: str | None = None
+    token: str | None = None
+    vm_id: str | None = None
+    ws_url: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "SandboxResponse":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class CreateSkillRequest:
+    """models.CreateSkillRequest"""
+    content: str
+    description: str | None = None
+    name: str
+    resources: dict[str, string] | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "CreateSkillRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class PoolConfig:
+    """models.PoolConfig"""
+    default_skills: list[str] | None = None
+    default_tier: str | None = None
+    idle_ttl_seconds: int | None = None
+    max_total: int | None = None
+    max_vm_ttl_seconds: int | None = None
+    max_warm: int | None = None
+    min_warm: int | None = None
+    recycle: bool | None = None
+    scale_up_threshold: float | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "PoolConfig":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class PoolStatus:
+    """models.PoolStatus"""
+    allocated: int | None = None
+    by_tier: dict[str, integer] | None = None
+    total: int | None = None
+    warm: int | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "PoolStatus":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class ReleaseRequest:
+    """models.ReleaseRequest"""
+    recycle: bool | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "ReleaseRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class RenewRequest:
+    """models.RenewRequest"""
+    ttl_seconds: int
+    @classmethod
+    def from_dict(cls, d: dict) -> "RenewRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class Skill:
+    """models.Skill"""
+    content: str | None = None
+    content_hash: str | None = None
+    created_at: str | None = None
+    description: str | None = None
+    name: str | None = None
+    resources: dict[str, string] | None = None
+    updated_at: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "Skill":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class UsageRecord:
+    """models.UsageRecord"""
+    duration_seconds: int | None = None
+    ended_at: str | None = None
+    reason: str | None = None
+    started_at: str | None = None
+    tier: str | None = None
+    vm_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "UsageRecord":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class UsageSummary:
+    """models.UsageSummary"""
+    by_tier: dict[str, integer] | None = None
+    period_end: str | None = None
+    period_start: str | None = None
+    total_seconds: int | None = None
+    vm_count: int | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "UsageSummary":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class fleet-manager_internal_Fleet:
+    """fleet-manager_internal_models.Fleet"""
+    config: str | None = None
+    created_at: str | None = None
+    description: str | None = None
+    environment_id: str | None = None
+    id: str | None = None
+    is_active: bool | None = None
+    name: str | None = None
+    org_id: str | None = None
+    updated_at: str | None = None
+    workspace_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "fleet-manager_internal_Fleet":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class fleet-manager_internal_FleetAgent:
+    """fleet-manager_internal_models.FleetAgent"""
+    agent_id: str | None = None
+    capabilities: list[str] | None = None
+    created_at: str | None = None
+    description: str | None = None
+    endpoint: str | None = None
+    fleet_id: str | None = None
+    name: str | None = None
+    visibility: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "fleet-manager_internal_FleetAgent":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class task-service_internal_Task:
+    """task-service_internal_models.Task"""
+    context: str | None = None
+    created_at: str | None = None
+    environment_id: str | None = None
+    error: str | None = None
+    fleet_id: str | None = None
+    id: str | None = None
+    input: str | None = None
+    org_id: str | None = None
+    result: str | None = None
+    status: str | None = None
+    updated_at: str | None = None
+    workspace_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "task-service_internal_Task":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_AdaptiveConfig:
+    """workflow-executor_internal_models.AdaptiveConfig"""
+    enabled: bool | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_AdaptiveConfig":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_ApprovalConfig:
+    """workflow-executor_internal_models.ApprovalConfig"""
+    adaptive: workflow-executor_internal_models.AdaptiveConfig | None = None
+    require_final_approval: bool | None = None
+    require_plan_review: bool | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_ApprovalConfig":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_CallbackRequest:
+    """workflow-executor_internal_models.CallbackRequest"""
+    error: str | None = None
+    node_id: str | None = None
+    output: list[int] | None = None
+    status: str
+    tokens_used: int | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_CallbackRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_DAGEdge:
+    """workflow-executor_internal_models.DAGEdge"""
+    from: str | None = None
+    source: str | None = None
+    target: str | None = None
+    to: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_DAGEdge":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_DAGNode:
+    """workflow-executor_internal_models.DAGNode"""
+    agent_id: str | None = None
+    config: workflow-executor_internal_models.NodeConfig | None = None
+    depends_on: list[str] | None = None
+    description: str | None = None
+    endpoint: str | None = None
+    id: str | None = None
+    input: list[int] | None = None
+    requires_approval: bool | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_DAGNode":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_DAGSpec:
+    """workflow-executor_internal_models.DAGSpec"""
+    edges: list[workflow-executor_internal_models.DAGEdge] | None = None
+    nodes: list[workflow-executor_internal_models.DAGNode] | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_DAGSpec":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_ErrorResponse:
+    """workflow-executor_internal_models.ErrorResponse"""
+    code: str | None = None
+    message: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_ErrorResponse":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_ExecuteRequest:
+    """workflow-executor_internal_models.ExecuteRequest"""
+    dag: workflow-executor_internal_models.DAGSpec
+    fleet_config: workflow-executor_internal_models.FleetConfig | None = None
+    fleet_id: str | None = None
+    goal: str | None = None
+    org_id: str
+    task_id: str
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_ExecuteRequest":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_ExecuteResponse:
+    """workflow-executor_internal_models.ExecuteResponse"""
+    status: str | None = None
+    workflow_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_ExecuteResponse":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_FleetConfig:
+    """workflow-executor_internal_models.FleetConfig"""
+    approval: workflow-executor_internal_models.ApprovalConfig | None = None
+    confidence_threshold: float | None = None
+    system_prompt: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_FleetConfig":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_NodeConfig:
+    """workflow-executor_internal_models.NodeConfig"""
+    retry_count: int | None = None
+    retry_delay_seconds: int | None = None
+    timeout_seconds: int | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_NodeConfig":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_NodeExecution:
+    """workflow-executor_internal_models.NodeExecution"""
+    agent_id: str | None = None
+    completed_at: str | None = None
+    error: str | None = None
+    id: str | None = None
+    input: list[int] | None = None
+    node_id: str | None = None
+    output: list[int] | None = None
+    started_at: str | None = None
+    status: str | None = None
+    tokens_used: int | None = None
+    workflow_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_NodeExecution":
+        return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
+
+@dataclass
+class workflow-executor_internal_Workflow:
+    """workflow-executor_internal_models.Workflow"""
+    completed_at: str | None = None
+    created_at: str | None = None
+    dag: workflow-executor_internal_models.DAGSpec | None = None
+    error: str | None = None
+    fleet_config: workflow-executor_internal_models.FleetConfig | None = None
+    fleet_id: str | None = None
+    goal: str | None = None
+    id: str | None = None
+    nodes_completed: int | None = None
+    nodes_total: int | None = None
+    org_id: str | None = None
+    started_at: str | None = None
+    status: str | None = None
+    task_id: str | None = None
+    @classmethod
+    def from_dict(cls, d: dict) -> "workflow-executor_internal_Workflow":
         return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
 

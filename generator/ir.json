@@ -2,6 +2,7 @@
   "services": {
     "sandbox": {
       "description": "Isolated execution environments",
+      "output_dir": "",
       "methods": {
         "create": {
           "http_method": "POST",
@@ -94,6 +95,7 @@
     },
     "agent": {
       "description": "Agent registry \u2014 register and manage agent images",
+      "output_dir": "",
       "methods": {
         "register": {
           "http_method": "POST",
@@ -171,6 +173,7 @@
     },
     "instance": {
       "description": "Agent deployments \u2014 deploy agents and manage instances",
+      "output_dir": "",
       "methods": {
         "deploy": {
           "http_method": "POST",
@@ -249,96 +252,259 @@
           ]
         }
       }
+    },
+    "fleet": {
+      "description": "Fleet management \u2014 create and configure agent fleets",
+      "output_dir": "hexel/orchestrator",
+      "methods": {
+        "create": {
+          "http_method": "POST",
+          "path": "/orchestrator/v1/fleets",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "fleet-manager_internal_Fleet",
+          "description": "Create fleet",
+          "tags": [
+            "fleets"
+          ]
+        },
+        "list": {
+          "http_method": "GET",
+          "path": "/orchestrator/v1/fleets",
+          "path_params": [],
+          "request_type": null,
+          "response_type": null,
+          "description": "List fleets",
+          "tags": [
+            "fleets"
+          ]
+        },
+        "get": {
+          "http_method": "GET",
+          "path": "/orchestrator/v1/fleets/{fleet_id}",
+          "path_params": [
+            "fleet_id"
+          ],
+          "request_type": null,
+          "response_type": "fleet-manager_internal_Fleet",
+          "description": "Get fleet",
+          "tags": [
+            "fleets"
+          ]
+        },
+        "add_agent": {
+          "http_method": "POST",
+          "path": "/orchestrator/v1/fleets/{fleet_id}/agents",
+          "path_params": [
+            "fleet_id"
+          ],
+          "request_type": null,
+          "response_type": "fleet-manager_internal_FleetAgent",
+          "description": "Add agent to fleet",
+          "tags": [
+            "fleets"
+          ]
+        },
+        "list_agents": {
+          "http_method": "GET",
+          "path": "/orchestrator/v1/fleets/{fleet_id}/agents",
+          "path_params": [
+            "fleet_id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "List fleet agents",
+          "tags": [
+            "fleets"
+          ]
+        }
+      }
+    },
+    "task": {
+      "description": "Task execution \u2014 submit goals, review plans, track results",
+      "output_dir": "hexel/orchestrator",
+      "methods": {
+        "create": {
+          "http_method": "POST",
+          "path": "/orchestrator/v1/tasks",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "task-service_internal_Task",
+          "description": "Submit task",
+          "tags": [
+            "tasks"
+          ]
+        },
+        "list": {
+          "http_method": "GET",
+          "path": "/orchestrator/v1/tasks",
+          "path_params": [],
+          "request_type": null,
+          "response_type": null,
+          "description": "List tasks",
+          "tags": [
+            "tasks"
+          ]
+        },
+        "get": {
+          "http_method": "GET",
+          "path": "/orchestrator/v1/tasks/{task_id}",
+          "path_params": [
+            "task_id"
+          ],
+          "request_type": null,
+          "response_type": "task-service_internal_Task",
+          "description": "Get task",
+          "tags": [
+            "tasks"
+          ]
+        },
+        "update_status": {
+          "http_method": "PUT",
+          "path": "/orchestrator/v1/tasks/{task_id}/status",
+          "path_params": [
+            "task_id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "Update task status",
+          "tags": [
+            "tasks"
+          ]
+        },
+        "approve_plan": {
+          "http_method": "POST",
+          "path": "/orchestrator/v1/tasks/{task_id}/plan/approve",
+          "path_params": [
+            "task_id"
+          ],
+          "request_type": null,
+          "response_type": "task-service_internal_Task",
+          "description": "Approve plan",
+          "tags": [
+            "tasks"
+          ]
+        },
+        "reject_plan": {
+          "http_method": "POST",
+          "path": "/orchestrator/v1/tasks/{task_id}/plan/reject",
+          "path_params": [
+            "task_id"
+          ],
+          "request_type": null,
+          "response_type": "task-service_internal_Task",
+          "description": "Reject plan",
+          "tags": [
+            "tasks"
+          ]
+        },
+        "stream": {
+          "http_method": "GET",
+          "path": "/orchestrator/v1/tasks/{task_id}/stream",
+          "path_params": [
+            "task_id"
+          ],
+          "request_type": null,
+          "response_type": null,
+          "description": "Stream task execution events",
+          "tags": [
+            "tasks"
+          ]
+        }
+      }
+    },
+    "approval": {
+      "description": "Approval workflows \u2014 review and approve agent actions",
+      "output_dir": "hexel/orchestrator",
+      "methods": {
+        "list": {
+          "http_method": "GET",
+          "path": "/v1/approvals",
+          "path_params": [],
+          "request_type": null,
+          "response_type": "list[approval-service_internal_ApprovalRequest]",
+          "description": "List approval requests with optional filtering by org, agent, status, task",
+          "tags": [
+            "approvals"
+          ]
+        },
+        "create": {
+          "http_method": "POST",
+          "path": "/v1/approvals",
+          "path_params": [],
+          "request_type": "approval-service_internal_CreateApprovalRequest",
+          "response_type": "approval-service_internal_ApprovalRequest",
+          "description": "Create a new approval request with PENDING status and 24h expiry",
+          "tags": [
+            "approvals"
+          ]
+        },
+        "get": {
+          "http_method": "GET",
+          "path": "/v1/approvals/{id}",
+          "path_params": [
+            "id"
+          ],
+          "request_type": null,
+          "response_type": "approval-service_internal_ApprovalRequest",
+          "description": "Retrieve a single approval request by its UUID",
+          "tags": [
+            "approvals"
+          ]
+        },
+        "review": {
+          "http_method": "POST",
+          "path": "/v1/approvals/{id}/review",
+          "path_params": [
+            "id"
+          ],
+          "request_type": "approval-service_internal_ReviewRequest",
+          "response_type": "approval-service_internal_ApprovalRequest",
+          "description": "Approve or reject a pending approval request",
+          "tags": [
+            "approvals"
+          ]
+        },
+        "list_by_task": {
+          "http_method": "GET",
+          "path": "/v1/tasks/{task_id}/approvals",
+          "path_params": [
+            "task_id"
+          ],
+          "request_type": null,
+          "response_type": "list[approval-service_internal_ApprovalRequest]",
+          "description": "List all pending approval requests for a given task ID",
+          "tags": [
+            "approvals"
+          ]
+        }
+      }
     }
   },
   "types": {
-    "OAuthClient": {
-      "original": "iamclient.OAuthClient",
-      "fields": [
-        {
-          "name": "client_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "is_active",
-          "type": "boolean",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "OAuthClientResponse": {
-      "original": "iamclient.OAuthClientResponse",
-      "fields": [
-        {
-          "name": "client_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "client_secret",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
     "InstanceInfo": {
       "original": "models.Agent",
       "fields": [
         {
-          "name": "allowed_org_ids",
-          "type": "list[string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "author",
+          "name": "config_hash",
           "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "capabilities",
-          "type": "list[string]",
           "required": false,
           "description": ""
         },
         {
           "name": "created_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "description",
           "type": "string",
           "required": false,
           "description": ""
         },
         {
           "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint_name",
           "type": "string",
           "required": false,
           "description": ""
@@ -356,14 +522,8 @@
           "description": ""
         },
         {
-          "name": "image_pull_secret",
-          "type": "models.ImagePullSecret",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "manifest",
-          "type": "models.AgentManifest",
+          "type": "object",
           "required": false,
           "description": ""
         },
@@ -380,78 +540,7 @@
           "description": ""
         },
         {
-          "name": "org_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "public_key",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "state",
-          "type": "string",
-          "required": false,
-          "description": "registered, deploying, running, active, idle, sleeping, stopped, failed"
-        },
-        {
-          "name": "updated_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "version",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "visibility",
-          "type": "string",
-          "required": false,
-          "description": "private, public"
-        }
-      ]
-    },
-    "SandboxInfo": {
-      "original": "models.AgentVM",
-      "fields": [
-        {
-          "name": "allocated_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "expires_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "metadata",
-          "type": "dict[str, string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "released_at",
+          "name": "registry_id",
           "type": "string",
           "required": false,
           "description": ""
@@ -481,387 +570,8 @@
           "description": ""
         },
         {
-          "name": "ttl_seconds",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "CreateSandboxRequest": {
-      "original": "models.AllocateRequest",
-      "fields": [
-        {
-          "name": "env",
-          "type": "dict[str, string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "metadata",
-          "type": "dict[str, string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "org_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "secure_runtime",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "skills",
-          "type": "list[string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "tier",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "name": "ttl_seconds",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "SandboxResponse": {
-      "original": "models.AllocateResponse",
-      "fields": [
-        {
-          "name": "endpoint",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "expires_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "skills_loaded",
-          "type": "list[string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "state",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "tier",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "token",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "vm_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "ws_url",
-          "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "CreateSkillRequest": {
-      "original": "models.CreateSkillRequest",
-      "fields": [
-        {
-          "name": "content",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": true,
-          "description": ""
-        },
-        {
-          "name": "resources",
-          "type": "dict[str, string]",
-          "required": false,
-          "description": "Resources are files written into /workspace/skills/<name>/.\nInclude \"requirements.txt\" to install Python dependencies at VM boot."
-        }
-      ]
-    },
-    "ErrorResponse": {
-      "original": "models.ErrorResponse",
-      "fields": [
-        {
-          "name": "code",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "message",
-          "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "PoolConfig": {
-      "original": "models.PoolConfig",
-      "fields": [
-        {
-          "name": "default_skills",
-          "type": "list[string]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "default_tier",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "idle_ttl_seconds",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "max_total",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "max_vm_ttl_seconds",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "max_warm",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "min_warm",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "recycle",
-          "type": "boolean",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "scale_up_threshold",
-          "type": "number",
-          "required": false,
-          "description": "ScaleUpThreshold: when allocated/(warm+allocated) exceeds this ratio (0.0\u20131.0),\nproactively create more warm pods. Default 0.7 (70% utilisation triggers scale-up)."
-        }
-      ]
-    },
-    "PoolStatus": {
-      "original": "models.PoolStatus",
-      "fields": [
-        {
-          "name": "allocated",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "by_tier",
-          "type": "dict[str, integer]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "total",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "warm",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "ReleaseRequest": {
-      "original": "models.ReleaseRequest",
-      "fields": [
-        {
-          "name": "recycle",
-          "type": "boolean",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "RenewRequest": {
-      "original": "models.RenewRequest",
-      "fields": [
-        {
-          "name": "ttl_seconds",
-          "type": "integer",
-          "required": true,
-          "description": ""
-        }
-      ]
-    },
-    "Skill": {
-      "original": "models.Skill",
-      "fields": [
-        {
-          "name": "content",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "content_hash",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "resources",
-          "type": "dict[str, string]",
-          "required": false,
-          "description": ""
-        },
-        {
           "name": "updated_at",
           "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "UsageRecord": {
-      "original": "models.UsageRecord",
-      "fields": [
-        {
-          "name": "duration_seconds",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "ended_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "reason",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "started_at",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "tier",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "vm_id",
-          "type": "string",
-          "required": false,
-          "description": ""
-        }
-      ]
-    },
-    "UsageSummary": {
-      "original": "models.UsageSummary",
-      "fields": [
-        {
-          "name": "by_tier",
-          "type": "dict[str, integer]",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "period_end",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "period_start",
-          "type": "string",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "total_seconds",
-          "type": "integer",
-          "required": false,
-          "description": ""
-        },
-        {
-          "name": "vm_count",
-          "type": "integer",
           "required": false,
           "description": ""
         }
@@ -1056,6 +766,29 @@
           "name": "name",
           "type": "string",
           "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "ErrorResponse": {
+      "original": "models.ErrorResponse",
+      "fields": [
+        {
+          "name": "code",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "error_code",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": false,
           "description": ""
         }
       ]
@@ -1510,6 +1243,1339 @@
         },
         {
           "name": "path",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "approval-service_internal_ApprovalRequest": {
+      "original": "approval-service_internal_models.ApprovalRequest",
+      "fields": [
+        {
+          "name": "action",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "agent_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "context",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "node_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "policy_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "requested_by",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "resource",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "reviewed_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "reviewed_by",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "approval-service_internal_models.Status",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "task_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "approval-service_internal_CreateApprovalRequest": {
+      "original": "approval-service_internal_models.CreateApprovalRequest",
+      "fields": [
+        {
+          "name": "action",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "agent_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "context",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "node_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "policy_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "requested_by",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "resource",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "task_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "approval-service_internal_ErrorResponse": {
+      "original": "approval-service_internal_models.ErrorResponse",
+      "fields": [
+        {
+          "name": "details",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "approval-service_internal_ReviewRequest": {
+      "original": "approval-service_internal_models.ReviewRequest",
+      "fields": [
+        {
+          "name": "comment",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "decision",
+          "type": "approval-service_internal_models.Status",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "reviewed_by",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "approval-service_internal_Status": {
+      "original": "approval-service_internal_models.Status",
+      "fields": []
+    },
+    "OAuthClient": {
+      "original": "iamclient.OAuthClient",
+      "fields": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "OAuthClientResponse": {
+      "original": "iamclient.OAuthClientResponse",
+      "fields": [
+        {
+          "name": "client_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "client_secret",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "SandboxInfo": {
+      "original": "models.AgentVM",
+      "fields": [
+        {
+          "name": "allocated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "released_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateSandboxRequest": {
+      "original": "models.AllocateRequest",
+      "fields": [
+        {
+          "name": "env",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "metadata",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "secure_runtime",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "SandboxResponse": {
+      "original": "models.AllocateResponse",
+      "fields": [
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "skills_loaded",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "vm_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ws_url",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "CreateSkillRequest": {
+      "original": "models.CreateSkillRequest",
+      "fields": [
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "resources",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": "Resources are files written into /workspace/skills/<name>/.\nInclude \"requirements.txt\" to install Python dependencies at VM boot."
+        }
+      ]
+    },
+    "PoolConfig": {
+      "original": "models.PoolConfig",
+      "fields": [
+        {
+          "name": "default_skills",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "default_tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "idle_ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max_total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max_vm_ttl_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "max_warm",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "min_warm",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "recycle",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "scale_up_threshold",
+          "type": "number",
+          "required": false,
+          "description": "ScaleUpThreshold: when allocated/(warm+allocated) exceeds this ratio (0.0\u20131.0),\nproactively create more warm pods. Default 0.7 (70% utilisation triggers scale-up)."
+        }
+      ]
+    },
+    "PoolStatus": {
+      "original": "models.PoolStatus",
+      "fields": [
+        {
+          "name": "allocated",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "by_tier",
+          "type": "dict[str, integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "warm",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "ReleaseRequest": {
+      "original": "models.ReleaseRequest",
+      "fields": [
+        {
+          "name": "recycle",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "RenewRequest": {
+      "original": "models.RenewRequest",
+      "fields": [
+        {
+          "name": "ttl_seconds",
+          "type": "integer",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "Skill": {
+      "original": "models.Skill",
+      "fields": [
+        {
+          "name": "content",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "content_hash",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "resources",
+          "type": "dict[str, string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "UsageRecord": {
+      "original": "models.UsageRecord",
+      "fields": [
+        {
+          "name": "duration_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "ended_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "started_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tier",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "vm_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "UsageSummary": {
+      "original": "models.UsageSummary",
+      "fields": [
+        {
+          "name": "by_tier",
+          "type": "dict[str, integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "period_end",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "period_start",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "total_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "vm_count",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "fleet-manager_internal_Fleet": {
+      "original": "fleet-manager_internal_models.Fleet",
+      "fields": [
+        {
+          "name": "config",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "environment_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "workspace_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "fleet-manager_internal_FleetAgent": {
+      "original": "fleet-manager_internal_models.FleetAgent",
+      "fields": [
+        {
+          "name": "agent_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "capabilities",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fleet_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "visibility",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "task-service_internal_Task": {
+      "original": "task-service_internal_models.Task",
+      "fields": [
+        {
+          "name": "context",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "environment_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fleet_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "input",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "result",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "workspace_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_AdaptiveConfig": {
+      "original": "workflow-executor_internal_models.AdaptiveConfig",
+      "fields": [
+        {
+          "name": "enabled",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_ApprovalConfig": {
+      "original": "workflow-executor_internal_models.ApprovalConfig",
+      "fields": [
+        {
+          "name": "adaptive",
+          "type": "workflow-executor_internal_models.AdaptiveConfig",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "require_final_approval",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "require_plan_review",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_CallbackRequest": {
+      "original": "workflow-executor_internal_models.CallbackRequest",
+      "fields": [
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "node_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "output",
+          "type": "list[integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "tokens_used",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_DAGEdge": {
+      "original": "workflow-executor_internal_models.DAGEdge",
+      "fields": [
+        {
+          "name": "from",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "required": false,
+          "description": "Planning engine sends source/target, accept both"
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "to",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_DAGNode": {
+      "original": "workflow-executor_internal_models.DAGNode",
+      "fields": [
+        {
+          "name": "agent_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "config",
+          "type": "workflow-executor_internal_models.NodeConfig",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "depends_on",
+          "type": "list[string]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "endpoint",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "input",
+          "type": "list[integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "requires_approval",
+          "type": "boolean",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_DAGSpec": {
+      "original": "workflow-executor_internal_models.DAGSpec",
+      "fields": [
+        {
+          "name": "edges",
+          "type": "list[workflow-executor_internal_models.DAGEdge]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "nodes",
+          "type": "list[workflow-executor_internal_models.DAGNode]",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_ErrorResponse": {
+      "original": "workflow-executor_internal_models.ErrorResponse",
+      "fields": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_ExecuteRequest": {
+      "original": "workflow-executor_internal_models.ExecuteRequest",
+      "fields": [
+        {
+          "name": "dag",
+          "type": "workflow-executor_internal_models.DAGSpec",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "fleet_config",
+          "type": "workflow-executor_internal_models.FleetConfig",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fleet_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "goal",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        },
+        {
+          "name": "task_id",
+          "type": "string",
+          "required": true,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_ExecuteResponse": {
+      "original": "workflow-executor_internal_models.ExecuteResponse",
+      "fields": [
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "workflow_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_FleetConfig": {
+      "original": "workflow-executor_internal_models.FleetConfig",
+      "fields": [
+        {
+          "name": "approval",
+          "type": "workflow-executor_internal_models.ApprovalConfig",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "confidence_threshold",
+          "type": "number",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "system_prompt",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_NodeConfig": {
+      "original": "workflow-executor_internal_models.NodeConfig",
+      "fields": [
+        {
+          "name": "retry_count",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "retry_delay_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "timeout_seconds",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_NodeExecution": {
+      "original": "workflow-executor_internal_models.NodeExecution",
+      "fields": [
+        {
+          "name": "agent_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "completed_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "input",
+          "type": "list[integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "node_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "output",
+          "type": "list[integer]",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "started_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "tokens_used",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "workflow_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        }
+      ]
+    },
+    "workflow-executor_internal_Workflow": {
+      "original": "workflow-executor_internal_models.Workflow",
+      "fields": [
+        {
+          "name": "completed_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "dag",
+          "type": "workflow-executor_internal_models.DAGSpec",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fleet_config",
+          "type": "workflow-executor_internal_models.FleetConfig",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "fleet_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "goal",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "nodes_completed",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "nodes_total",
+          "type": "integer",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "org_id",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "started_at",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": false,
+          "description": ""
+        },
+        {
+          "name": "task_id",
           "type": "string",
           "required": false,
           "description": ""

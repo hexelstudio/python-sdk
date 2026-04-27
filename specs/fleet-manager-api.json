@@ -1,68 +1,66 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
         "description": "Manage agent fleets, bind agents with endpoints, assign resources",
         "title": "Fleet Manager API",
         "contact": {},
         "version": "1.0"
     },
-    "host": "api.hexelstudio.com",
-    "basePath": "/",
     "paths": {
         "/orchestrator/v1/fleets": {
             "get": {
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "List fleets",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "Environment ID",
                         "name": "environment_id",
                         "in": "query",
-                        "required": true
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "type": "object"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
                         }
                     }
                 }
             },
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "Create fleet",
-                "parameters": [
-                    {
-                        "description": "Fleet details",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
                         }
-                    }
-                ],
+                    },
+                    "description": "Fleet details",
+                    "required": true
+                },
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/models.Fleet"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/fleet-manager_internal_models.Fleet"
+                                }
+                            }
                         }
                     }
                 }
@@ -70,27 +68,30 @@
         },
         "/orchestrator/v1/fleets/{fleet_id}": {
             "get": {
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "Get fleet",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "Fleet ID",
                         "name": "fleet_id",
                         "in": "path",
-                        "required": true
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Fleet"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/fleet-manager_internal_models.Fleet"
+                                }
+                            }
                         }
                     }
                 }
@@ -98,65 +99,70 @@
         },
         "/orchestrator/v1/fleets/{fleet_id}/agents": {
             "get": {
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "List fleet agents",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "Fleet ID",
                         "name": "fleet_id",
                         "in": "path",
-                        "required": true
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "type": "object"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
                         }
                     }
                 }
             },
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "Add agent to fleet",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "Fleet ID",
                         "name": "fleet_id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Agent details",
-                        "name": "request",
-                        "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object"
+                            "type": "string"
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "description": "Agent details",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.FleetAgent"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/fleet-manager_internal_models.FleetAgent"
+                                }
+                            }
                         }
                     }
                 }
@@ -164,145 +170,157 @@
         },
         "/orchestrator/v1/fleets/{fleet_id}/resources": {
             "get": {
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "List fleet resources",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "Fleet ID",
                         "name": "fleet_id",
                         "in": "path",
-                        "required": true
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "type": "object"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
                         }
                     }
                 }
             },
             "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "fleets"
                 ],
                 "summary": "Add resource to fleet",
                 "parameters": [
                     {
-                        "type": "string",
                         "description": "Fleet ID",
                         "name": "fleet_id",
                         "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Resource",
-                        "name": "request",
-                        "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "object"
+                            "type": "string"
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "description": "Resource",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "type": "object"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     },
-    "definitions": {
-        "models.Fleet": {
-            "type": "object",
-            "properties": {
-                "config": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "environment_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "org_id": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "workspace_id": {
-                    "type": "string"
-                }
+    "servers": [
+        {
+            "url": "//api.hexelstudio.com"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
             }
         },
-        "models.FleetAgent": {
-            "type": "object",
-            "properties": {
-                "agent_id": {
-                    "type": "string"
-                },
-                "capabilities": {
-                    "type": "array",
-                    "items": {
+        "schemas": {
+            "fleet-manager_internal_models.Fleet": {
+                "type": "object",
+                "properties": {
+                    "config": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "environment_id": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "org_id": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    },
+                    "workspace_id": {
                         "type": "string"
                     }
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "endpoint": {
-                    "type": "string"
-                },
-                "fleet_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "visibility": {
-                    "type": "string"
+                }
+            },
+            "fleet-manager_internal_models.FleetAgent": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string"
+                    },
+                    "capabilities": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "endpoint": {
+                        "type": "string"
+                    },
+                    "fleet_id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "visibility": {
+                        "type": "string"
+                    }
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }

@@ -33,6 +33,42 @@
         "POST /compute/v1/deployments/{deployment_id}/stop": "stop",
         "POST /compute/v1/deployments/{deployment_id}/redeploy": "redeploy"
       }
+    },
+    "fleet": {
+      "description": "Fleet management — create and configure agent fleets",
+      "output_dir": "hexel/orchestrator",
+      "endpoints": {
+        "POST /orchestrator/v1/fleets": "create",
+        "GET /orchestrator/v1/fleets": "list",
+        "GET /orchestrator/v1/fleets/{fleet_id}": "get",
+        "DELETE /orchestrator/v1/fleets/{fleet_id}": "delete",
+        "POST /orchestrator/v1/fleets/{fleet_id}/agents": "add_agent",
+        "GET /orchestrator/v1/fleets/{fleet_id}/agents": "list_agents"
+      }
+    },
+    "task": {
+      "description": "Task execution — submit goals, review plans, track results",
+      "output_dir": "hexel/orchestrator",
+      "endpoints": {
+        "POST /orchestrator/v1/tasks": "create",
+        "GET /orchestrator/v1/tasks": "list",
+        "GET /orchestrator/v1/tasks/{task_id}": "get",
+        "PUT /orchestrator/v1/tasks/{task_id}/status": "update_status",
+        "POST /orchestrator/v1/tasks/{task_id}/plan/approve": "approve_plan",
+        "POST /orchestrator/v1/tasks/{task_id}/plan/reject": "reject_plan",
+        "GET /orchestrator/v1/tasks/{task_id}/stream": "stream"
+      }
+    },
+    "approval": {
+      "description": "Approval workflows — review and approve agent actions",
+      "output_dir": "hexel/orchestrator",
+      "endpoints": {
+        "GET /v1/approvals": "list",
+        "POST /v1/approvals": "create",
+        "GET /v1/approvals/{id}": "get",
+        "POST /v1/approvals/{id}/review": "review",
+        "GET /v1/tasks/{task_id}/approvals": "list_by_task"
+      }
     }
   },
   "exclude_paths": [
@@ -42,7 +78,15 @@
     "/compute/v1/skills",
     "/compute/v1/usage",
     "/compute/v1/vms/{id}/r/",
-    "/compute/v1/vms/{id}/endpoint"
+    "/compute/v1/vms/{id}/endpoint",
+    "/v1/workflows/execute",
+    "/v1/workflows/{id}/cancel",
+    "/v1/workflows/{id}/nodes",
+    "/v1/workflows/{id}/nodes/{node_id}",
+    "/v1/workflows/{workflow_id}/callbacks/{node_id}",
+    "/orchestrator/v1/tasks/{task_id}/error",
+    "/orchestrator/v1/tasks/{task_id}/result",
+    "/orchestrator/v1/fleets/{fleet_id}/resources"
   ],
   "type_renames": {
     "models.AllocateRequest": "CreateSandboxRequest",
@@ -51,7 +95,12 @@
     "models.Agent": "InstanceInfo",
     "models.ReleaseRequest": "ReleaseRequest",
     "models.RenewRequest": "RenewRequest",
-    "registryclient.Agent": "AgentInfo"
+    "registryclient.Agent": "AgentInfo",
+    "models.Fleet": "FleetInfo",
+    "models.FleetAgent": "FleetAgentInfo",
+    "models.Task": "TaskInfo",
+    "models.ApprovalRequest": "ApprovalInfo",
+    "models.ReviewRequest": "ReviewRequest"
   },
   "websocket": {
     "sandbox": {

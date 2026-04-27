@@ -1,0 +1,686 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "DAG-based workflow execution engine for AI agent orchestration",
+        "title": "Workflow Executor API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/v1/workflows": {
+            "get": {
+                "description": "List workflows with optional filtering by task_id and status",
+                "tags": [
+                    "workflows"
+                ],
+                "summary": "List workflows",
+                "parameters": [
+                    {
+                        "description": "Filter by task ID",
+                        "name": "task_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Filter by status",
+                        "name": "status",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/workflow-executor_internal_models.Workflow"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workflows/execute": {
+            "post": {
+                "description": "Creates a workflow from a DAG spec and begins parallel execution",
+                "tags": [
+                    "workflows"
+                ],
+                "summary": "Start DAG workflow execution",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/workflow-executor_internal_models.ExecuteRequest"
+                            }
+                        }
+                    },
+                    "description": "Execution request",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ExecuteResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workflows/{id}": {
+            "get": {
+                "description": "Returns the current state of a workflow including node completion counts",
+                "tags": [
+                    "workflows"
+                ],
+                "summary": "Get workflow execution status",
+                "parameters": [
+                    {
+                        "description": "Workflow ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.Workflow"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workflows/{id}/cancel": {
+            "post": {
+                "description": "Cancels execution of a workflow and all pending nodes",
+                "tags": [
+                    "workflows"
+                ],
+                "summary": "Cancel a running workflow",
+                "parameters": [
+                    {
+                        "description": "Workflow ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workflows/{id}/nodes": {
+            "get": {
+                "description": "Returns all node executions for a given workflow",
+                "tags": [
+                    "nodes"
+                ],
+                "summary": "List all nodes in a workflow",
+                "parameters": [
+                    {
+                        "description": "Workflow ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/workflow-executor_internal_models.NodeExecution"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workflows/{id}/nodes/{node_id}": {
+            "get": {
+                "description": "Returns execution details for a specific node within a workflow",
+                "tags": [
+                    "nodes"
+                ],
+                "summary": "Get node execution details",
+                "parameters": [
+                    {
+                        "description": "Workflow ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Node ID",
+                        "name": "node_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.NodeExecution"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workflows/{workflow_id}/callbacks/{node_id}": {
+            "post": {
+                "description": "Called by agent pods when node execution completes or fails",
+                "tags": [
+                    "callbacks"
+                ],
+                "summary": "Handle agent execution callback",
+                "parameters": [
+                    {
+                        "description": "Workflow ID",
+                        "name": "workflow_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Node ID",
+                        "name": "node_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/workflow-executor_internal_models.CallbackRequest"
+                            }
+                        }
+                    },
+                    "description": "Callback payload",
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/workflow-executor_internal_models.ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "//localhost:8010"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        },
+        "schemas": {
+            "workflow-executor_internal_models.AdaptiveConfig": {
+                "type": "object",
+                "properties": {
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.ApprovalConfig": {
+                "type": "object",
+                "properties": {
+                    "adaptive": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.AdaptiveConfig"
+                    },
+                    "require_final_approval": {
+                        "type": "boolean"
+                    },
+                    "require_plan_review": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.CallbackRequest": {
+                "type": "object",
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "error": {
+                        "type": "string"
+                    },
+                    "node_id": {
+                        "type": "string"
+                    },
+                    "output": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "tokens_used": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.DAGEdge": {
+                "type": "object",
+                "properties": {
+                    "from": {
+                        "type": "string"
+                    },
+                    "source": {
+                        "description": "Planning engine sends source/target, accept both",
+                        "type": "string"
+                    },
+                    "target": {
+                        "type": "string"
+                    },
+                    "to": {
+                        "type": "string"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.DAGNode": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string"
+                    },
+                    "config": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.NodeConfig"
+                    },
+                    "depends_on": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "endpoint": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "input": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "requires_approval": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.DAGSpec": {
+                "type": "object",
+                "properties": {
+                    "edges": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/workflow-executor_internal_models.DAGEdge"
+                        }
+                    },
+                    "nodes": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/workflow-executor_internal_models.DAGNode"
+                        }
+                    }
+                }
+            },
+            "workflow-executor_internal_models.ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.ExecuteRequest": {
+                "type": "object",
+                "required": [
+                    "dag",
+                    "org_id",
+                    "task_id"
+                ],
+                "properties": {
+                    "dag": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.DAGSpec"
+                    },
+                    "fleet_config": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.FleetConfig"
+                    },
+                    "fleet_id": {
+                        "type": "string"
+                    },
+                    "goal": {
+                        "type": "string"
+                    },
+                    "org_id": {
+                        "type": "string"
+                    },
+                    "task_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.ExecuteResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "workflow_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.FleetConfig": {
+                "type": "object",
+                "properties": {
+                    "approval": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.ApprovalConfig"
+                    },
+                    "confidence_threshold": {
+                        "type": "number"
+                    },
+                    "system_prompt": {
+                        "type": "string"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.NodeConfig": {
+                "type": "object",
+                "properties": {
+                    "retry_count": {
+                        "type": "integer"
+                    },
+                    "retry_delay_seconds": {
+                        "type": "integer"
+                    },
+                    "timeout_seconds": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.NodeExecution": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string"
+                    },
+                    "completed_at": {
+                        "type": "string"
+                    },
+                    "error": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "input": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "node_id": {
+                        "type": "string"
+                    },
+                    "output": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "started_at": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "tokens_used": {
+                        "type": "integer"
+                    },
+                    "workflow_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "workflow-executor_internal_models.Workflow": {
+                "type": "object",
+                "properties": {
+                    "completed_at": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "dag": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.DAGSpec"
+                    },
+                    "error": {
+                        "type": "string"
+                    },
+                    "fleet_config": {
+                        "$ref": "#/components/schemas/workflow-executor_internal_models.FleetConfig"
+                    },
+                    "fleet_id": {
+                        "type": "string"
+                    },
+                    "goal": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "nodes_completed": {
+                        "type": "integer"
+                    },
+                    "nodes_total": {
+                        "type": "integer"
+                    },
+                    "org_id": {
+                        "type": "string"
+                    },
+                    "started_at": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "task_id": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
